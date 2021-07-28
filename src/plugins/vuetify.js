@@ -11,6 +11,7 @@ const vuetify = new Vuetify({
         verydarkcyan: '#00494d',
         darkgrayishcyan: '#5e7a7d',
         lightgrayishcyan: '#c5e4e7',
+				hovers: '#a5f8ed'
 
       },
     },
