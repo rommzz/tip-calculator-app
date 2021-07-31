@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
+import wb from "./registerServiceWorker";
+
+Vue.prototype.$workbox = wb;
 
 Vue.config.productionTip = false
 
