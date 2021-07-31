@@ -14,6 +14,7 @@
                   type="number"
 									placeholder="0"
 									v-model="bills"
+									@blur="dollarFormat()"
                   flat
                   dense
                   solo
@@ -148,18 +149,58 @@
 			people: null,
     }),
     methods: {
-      tipChange(tip){
+      dollarFormat() {
+				// Create our number formatter.
+				var formatter = new Intl.NumberFormat('en-US', {
+					style: 'currency',
+					currency: 'USD',
+
+					// These options are needed to round to whole numbers if that's what you want.
+					//minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+					//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+				});
+				console.log(formatter.format(this.bills)); /* $2,500.00 */
+				this.bills = formatter.format(this.bills)
+				this.bills = this.bills.replace('$', '')
+			},
+			tipChange(tip){
 				this.custom = null 
         this.tip = (tip == this.tip) ? null : tip
       },
 			tipAmount()
 			{
-				return '$0.00'
+				if (this.people) {
+					if (this.bills) {
+						let tipAmount = (this.bills * (this.tip/100)) / this.people
+						return '$' + tipAmount.toFixed(2)
+					}
+					else
+					{
+						return '$0.00' 		
+					}
+				} 
+				else 
+				{
+					return '$0.00' 		
+				}
 			},
 			total()
 			{
-				return '$0.00'
-			}
+				if (this.people) {
+					if (this.bills) {
+						let tipAmount = ((this.bills * (this.tip/100)) + parseFloat(this.bills)) / this.people
+						return '$'+(tipAmount).toFixed(2)
+					}
+					else
+					{
+						return '$0.00' 		
+					}
+				} 
+				else 
+				{
+					return '$0.00' 		
+				}
+			},
     },
 		created() {
 			// console.log(height);
@@ -168,9 +209,7 @@
 </script>
 
 <style scoped>
-/* .input-color >>> input {
 
-} */
 .right-input >>> input {
 	text-align: right;
 }
